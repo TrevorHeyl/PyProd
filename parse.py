@@ -1,7 +1,9 @@
-# Utility to process CT6 production logs.
+# Utility to process production logs.
 # Counts number of passes and failures and also
 # the total test time for each unit and for the batch based on the date
-# that is passed to the comman dline in format YYYY/MM/DD
+# that is passed to the command line in format YYYY/MM/DD
+# The code is a demonstrator in that it can be modified to process any type of production log that
+# consists of text files that need to be read and parsed
 
 import sys
 import os
