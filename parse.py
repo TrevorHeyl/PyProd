@@ -7,6 +7,7 @@
 
 import sys
 import os
+import pandas as pd
 
 
 testdate = ""
@@ -33,8 +34,8 @@ if testdate == "":
 
 print("Test Date:",testdate)
 # Column names
-print("SERIAL,FAIL,PASS,TOTALTESTS,TOTALTIME")
-
+labels = ["SERIAL","FAIL","PASS","TOTALTESTS","TOTALTIME"]
+df = pd.DataFrame(columns=labels)
 
 # for each file in the current directory ....
 for filename in os.listdir(os.getcwd()):
@@ -91,7 +92,9 @@ for filename in os.listdir(os.getcwd()):
         allpasstesttime = allpasstesttime + passtesttime
         allfailtesttime = allfailtesttime + failtesttime
         #print(",",failcount,",",passcount,",",passcount+failcount,",",TotalTestTime)
-        print("{:s},{:d},{:d},{:d},{:d}".format(filename[:-4],failcount,passcount,passcount+failcount,TotalTestTime))
+        #print("{:s},{:d},{:d},{:d},{:d}".format(filename[:-4],failcount,passcount,passcount+failcount,TotalTestTime))
+        df.loc[len(df)] = [filename[:-4],failcount,passcount,passcount+failcount,TotalTestTime]
+
 print("Total Units Tested ",unitcount)
 print("Total Tests performed ",alltestcount)
 print("Total Passes ",allpasscount)
@@ -103,3 +106,6 @@ print("Average test time failed units {:0.2f}s ".format(allfailtesttime/(allfail
 print("Percent passed units {:2.1f}% ".format(100*allpasscount/(unitcount) ))
 print("Testing Efficiency {:2.1f}%".format(100*allpasstesttime/(alltesttime)))
 print("Real average test time per unit {:0.2f}".format(alltesttime/unitcount)  )
+
+savefilename = "Stats" + testdate.replace('/','_') + ".csv"
+df.to_csv(savefilename)
